@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
     res.send("Up and running")
 })
 
+app.use(express.json())
+
 app.use('/users', usersRoutes);
 
 const port = process.env.PORT || 3000;
