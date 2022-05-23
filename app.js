@@ -1,5 +1,6 @@
 const express = require('express')
 const db = require('./config/database')
+const usersRoutes = require('./routes/usersRoutes')
 const app = express()
 
 async function testDbConnection() {
@@ -14,9 +15,10 @@ async function testDbConnection() {
 testDbConnection()
 
 app.get('/', (req, res) => {
-    console.log(req, res)
     res.send("Up and running")
 })
+
+app.use('/users', usersRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, console.log(`The server is running on ${port}`))
