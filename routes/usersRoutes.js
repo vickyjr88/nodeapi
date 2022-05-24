@@ -5,7 +5,7 @@ const router = express.Router()
 const WpUser = require('../models/WpUser')
 const db = require('../config/database')
 
-router.get('/', (req, res) => {
+router.get('/', verifyToken, (req, res) => {
     WpUser.findAll()
     .then((results) => {
         res.send(results);
@@ -29,5 +29,17 @@ router.post('/login', (req, res) => {
         res.sendStatus(500)
     });
 });
+
+function verifyToken(req, res, next){
+    console.log(req.headers)
+    const authorization = req.headers['authorization'];
+    if(authorization === undefined) res.sendStatus(403)
+    const token = authorization.split(' ')[1]
+    jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, data) => {
+        if(err) res.sendStatus(403)
+        req.token = token;
+        next();
+    });
+}
 
 module.exports = router;
