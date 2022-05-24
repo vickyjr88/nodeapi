@@ -36,7 +36,7 @@ function verifyToken(req, res, next){
     if(authorization === undefined) res.sendStatus(403)
     const token = authorization.split(' ')[1]
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, data) => {
-        if(err) res.sendStatus(403)
+        if(err) return res.sendStatus(403)
         req.token = token;
         next();
     });
